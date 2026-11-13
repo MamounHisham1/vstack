@@ -4,7 +4,24 @@ Personal skill collection. Every skill ID starts with `v-` and ships with a matc
 
 [![skills.sh](https://skills.sh/b/MamounHisham1/vstack)](https://skills.sh/MamounHisham1/vstack)
 
-## Install
+## Install as plugin (one install, all skills)
+
+In a Claude Code session (v2.1.275+):
+
+```text
+/plugin install vstack --marketplace MamounHisham1/vstack
+```
+
+Or from the shell:
+
+```bash
+claude plugin marketplace add MamounHisham1/vstack
+claude plugin install vstack@vstack
+```
+
+This installs the `vstack` plugin with every `v-` skill. Skills run namespaced, e.g. `/vstack:v-build`.
+
+## Install via skills CLI (per-agent)
 
 ```bash
 npx skills add MamounHisham1/vstack --skill v-skill-creator -y
@@ -29,6 +46,8 @@ The `skills` CLI remembers your last selected agents and reuses them on the next
 ```text
 skills/<skill-id>/SKILL.md          # canonical skill (skills.sh + agents)
 .opencode/commands/<skill-id>.md    # OpenCode slash command /<skill-id>
+.claude-plugin/plugin.json          # Claude Code plugin manifest (one plugin, all skills)
+.claude-plugin/marketplace.json     # marketplace catalog for `claude plugin marketplace add`
 ```
 
 ## Skills
