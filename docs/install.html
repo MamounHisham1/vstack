@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Install — vstack</title>
+  <meta name="description" content="Install vstack skills as a Claude Code plugin, per-skill via skills.sh, or as OpenCode slash commands." />
+  <link rel="stylesheet" href="./assets/css/tokens.css" />
+  <link rel="stylesheet" href="./assets/css/site.css" />
+  <link rel="stylesheet" href="./assets/css/catalog.css" />
+</head>
+<body>
+  <header class="site-header">
+    <nav aria-label="Primary">
+      <a href="./index.html">&larr; Back to catalog</a>
+      <span aria-hidden="true"> · </span>
+      <a href="https://github.com/MamounHisham1/vstack" target="_blank" rel="noopener">GitHub</a>
+      <span aria-hidden="true"> · </span>
+      <a href="https://skills.sh/MamounHisham1/vstack" target="_blank" rel="noopener">skills.sh</a>
+    </nav>
+    <h1>Install vstack</h1>
+    <p>One plugin for everything, one command per skill, or slash commands in OpenCode.</p>
+  </header>
+
+  <main>
+    <section aria-labelledby="plugin">
+      <h2 id="plugin">Plugin install (all skills, Claude Code v2.1.275+)</h2>
+      <p>Installs the <code>vstack</code> plugin with every <code>v-</code> skill. Skills run namespaced, e.g. <code>/vstack:v-build</code>.</p>
+      <pre><code>claude plugin marketplace add MamounHisham1/vstack
+claude plugin install vstack@vstack</code></pre>
+      <p><button type="button" class="copy-btn" data-copy="claude plugin marketplace add MamounHisham1/vstack
+claude plugin install vstack@vstack">Copy</button></p>
+      <p>Or inside a Claude Code session:</p>
+      <pre><code>/plugin install vstack --marketplace MamounHisham1/vstack</code></pre>
+      <p><button type="button" class="copy-btn" data-copy="/plugin install vstack --marketplace MamounHisham1/vstack">Copy</button></p>
+    </section>
+
+    <section aria-labelledby="per-skill">
+      <h2 id="per-skill">Per-skill install (skills CLI)</h2>
+      <p>Install a specific skill:</p>
+      <pre><code>npx skills add MamounHisham1/vstack --skill &lt;skill-id&gt; -y</code></pre>
+      <p>Install everything:</p>
+      <pre><code>npx skills add MamounHisham1/vstack --skill '*' -y</code></pre>
+      <p><button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill '*' -y">Copy install-all</button></p>
+
+      <h3>All 5 skills</h3>
+      <ul>
+        <li>
+          <code>v-build</code>
+          <pre><code>npx skills add MamounHisham1/vstack --skill v-build -y</code></pre>
+          <p><button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-build -y">Copy</button></p>
+        </li>
+        <li>
+          <code>v-copy-me</code>
+          <pre><code>npx skills add MamounHisham1/vstack --skill v-copy-me -y</code></pre>
+          <p><button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-copy-me -y">Copy</button></p>
+        </li>
+        <li>
+          <code>v-fill-me</code>
+          <pre><code>npx skills add MamounHisham1/vstack --skill v-fill-me -y</code></pre>
+          <p><button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-fill-me -y">Copy</button></p>
+        </li>
+        <li>
+          <code>v-humanize</code>
+          <pre><code>npx skills add MamounHisham1/vstack --skill v-humanize -y</code></pre>
+          <p><button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-humanize -y">Copy</button></p>
+        </li>
+        <li>
+          <code>v-skill-creator</code>
+          <pre><code>npx skills add MamounHisham1/vstack --skill v-skill-creator -y</code></pre>
+          <p><button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-skill-creator -y">Copy</button></p>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="opencode">
+      <h2 id="opencode">OpenCode slash commands</h2>
+      <p>This repo ships slash commands in <code>.opencode/commands/</code>, so each skill works as <code>/&lt;skill-id&gt;</code>:</p>
+      <pre><code>/v-build
+/v-copy-me
+/v-fill-me
+/v-humanize
+/v-skill-creator</code></pre>
+      <p>No install step needed inside this repo — just type the slash command.</p>
+    </section>
+
+    <section aria-labelledby="verify">
+      <h2 id="verify">Verify</h2>
+      <pre><code>npx skills list</code></pre>
+      <p><button type="button" class="copy-btn" data-copy="npx skills list">Copy</button></p>
+      <p>The <code>skills</code> CLI remembers your last selected agents and reuses them on the next install.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p><a href="./index.html">Catalog</a> · <a href="https://github.com/MamounHisham1/vstack">GitHub</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      function copyText(text, btn) {
+        function done(ok) {
+          if (!btn) return;
+          var original = btn.getAttribute('data-original') || 'Copy';
+          btn.textContent = ok ? 'Copied!' : 'Copy failed';
+          setTimeout(function () { btn.textContent = original; }, 1400);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () { done(true); }, function () { fallback(); });
+        } else {
+          fallback();
+        }
+        function fallback() {
+          try {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            var ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            done(!!ok);
+          } catch (e) {
+            done(false);
+          }
+        }
+      }
+      document.querySelectorAll('[data-copy]').forEach(function (btn) {
+        btn.setAttribute('data-original', btn.textContent);
+        btn.addEventListener('click', function () {
+          copyText(btn.getAttribute('data-copy') || '', btn);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
