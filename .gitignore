@@ -20,6 +20,9 @@ desktop.ini
 *.log
 logs/
 
+# Design review artifacts
+.impeccable/
+
 # Editor / local
 .vscode/
 .idea/

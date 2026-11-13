@@ -14,10 +14,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Rebuild skills.json and check for staleness
+      - name: Rebuild catalog and check for staleness
         run: |
           node scripts/build-skills-json.mjs
-          git diff --exit-code docs/data/skills.json
+          git diff --exit-code docs/data/skills.json docs/index.html docs/install.html
       - name: Syntax-check JS
         run: |
           node --check scripts/build-skills-json.mjs

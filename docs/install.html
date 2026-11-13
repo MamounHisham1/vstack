@@ -1,139 +1,292 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Install — vstack</title>
-  <meta name="description" content="Install vstack skills as a Claude Code plugin, per-skill via skills.sh, or as OpenCode slash commands." />
-  <link rel="stylesheet" href="./assets/css/tokens.css" />
-  <link rel="stylesheet" href="./assets/css/site.css" />
-  <link rel="stylesheet" href="./assets/css/catalog.css" />
+  <meta name="description" content="Install vstack skills as a Claude Code plugin, one skill at a time with the skills CLI, or as OpenCode slash commands. Every path is copy-paste ready.">
+  <link rel="canonical" href="https://mamounhisham1.github.io/vstack/install.html">
+  <meta name="theme-color" content="#e9e1cf">
+  <meta property="og:title" content="Install — vstack">
+  <meta property="og:description" content="Install vstack as a Claude Code plugin or one skill at a time. Copy-paste ready.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mamounhisham1.github.io/vstack/install.html">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="./assets/fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/courier-prime-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./assets/css/fonts.css">
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/site.css">
+  <link rel="stylesheet" href="./assets/css/catalog.css">
+  <script defer src="./assets/js/app.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#choose">Skip to the install guide</a>
+
   <header class="site-header">
-    <nav aria-label="Primary">
-      <a href="./index.html">&larr; Back to catalog</a>
-      <span aria-hidden="true"> · </span>
-      <a href="https://github.com/MamounHisham1/vstack" target="_blank" rel="noopener">GitHub</a>
-      <span aria-hidden="true"> · </span>
-      <a href="https://skills.sh/MamounHisham1/vstack" target="_blank" rel="noopener">skills.sh</a>
-    </nav>
-    <h1>Install vstack</h1>
-    <p>One plugin for everything, one command per skill, or slash commands in OpenCode.</p>
+    <div class="wrap site-header__inner">
+      <a class="brand" href="./index.html" aria-label="vstack home">
+        <span class="brand__mark" aria-hidden="true">v</span>
+        <span class="brand__text">
+          <span class="brand__word">vstack</span>
+          <span class="brand__sub">Catalog no. 01</span>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="./index.html#catalog">Catalog</a>
+        <a href="./install.html" aria-current="page">Install</a>
+        <a class="nav-optional" href="https://github.com/MamounHisham1/vstack">GitHub</a>
+        <a class="nav-optional" href="https://skills.sh/MamounHisham1/vstack">skills.sh</a>
+      </nav>
+      <a class="btn btn--primary btn--small nav-install" href="#plugin">Install</a>
+    </div>
   </header>
 
   <main>
-    <section aria-labelledby="plugin">
-      <h2 id="plugin">Plugin install (all skills, Claude Code v2.1.275+)</h2>
-      <p>Installs the <code>vstack</code> plugin with every <code>v-</code> skill. Skills run namespaced, e.g. <code>/vstack:v-build</code>.</p>
-      <pre><code>claude plugin marketplace add MamounHisham1/vstack
-claude plugin install vstack@vstack</code></pre>
-      <p><button type="button" class="copy-btn" data-copy="claude plugin marketplace add MamounHisham1/vstack
-claude plugin install vstack@vstack">Copy</button></p>
-      <p>Or inside a Claude Code session:</p>
-      <pre><code>/plugin install vstack --marketplace MamounHisham1/vstack</code></pre>
-      <p><button type="button" class="copy-btn" data-copy="/plugin install vstack --marketplace MamounHisham1/vstack">Copy</button></p>
+    <section class="install-hero" aria-labelledby="install-title">
+      <div class="wrap">
+        <h1 id="install-title">Install vstack.</h1>
+        <p>One command for all five skills, or one card at a time. Pick the path that matches the agent you already use. Every command is copy-paste ready.</p>
+        <ul class="hero__meta" aria-label="Install facts">
+          <li>Claude Code + OpenCode</li>
+          <li>5 skills</li>
+          <li>MIT licensed</li>
+        </ul>
+      </div>
     </section>
 
-    <section aria-labelledby="per-skill">
-      <h2 id="per-skill">Per-skill install (skills CLI)</h2>
-      <p>Install a specific skill:</p>
-      <pre><code>npx skills add MamounHisham1/vstack --skill &lt;skill-id&gt; -y</code></pre>
-      <p>Install everything:</p>
-      <pre><code>npx skills add MamounHisham1/vstack --skill '*' -y</code></pre>
-      <p><button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill '*' -y">Copy install-all</button></p>
+    <div class="wrap install-layout">
+      <aside class="install-nav" aria-label="On this page">
+        <p class="micro-label">On this card</p>
+        <a href="#choose">Which path?</a>
+        <a href="#plugin">Plugin install</a>
+        <a href="#per-skill">One skill</a>
+        <a href="#opencode">OpenCode</a>
+        <a href="#verify">Verify</a>
+        <a href="#questions">Questions</a>
+      </aside>
 
-      <h3>All 5 skills</h3>
-      <ul>
-        <li>
-          <code>v-build</code>
-          <pre><code>npx skills add MamounHisham1/vstack --skill v-build -y</code></pre>
-          <p><button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-build -y">Copy</button></p>
-        </li>
-        <li>
-          <code>v-copy-me</code>
-          <pre><code>npx skills add MamounHisham1/vstack --skill v-copy-me -y</code></pre>
-          <p><button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-copy-me -y">Copy</button></p>
-        </li>
-        <li>
-          <code>v-fill-me</code>
-          <pre><code>npx skills add MamounHisham1/vstack --skill v-fill-me -y</code></pre>
-          <p><button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-fill-me -y">Copy</button></p>
-        </li>
-        <li>
-          <code>v-humanize</code>
-          <pre><code>npx skills add MamounHisham1/vstack --skill v-humanize -y</code></pre>
-          <p><button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-humanize -y">Copy</button></p>
-        </li>
-        <li>
-          <code>v-skill-creator</code>
-          <pre><code>npx skills add MamounHisham1/vstack --skill v-skill-creator -y</code></pre>
-          <p><button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-skill-creator -y">Copy</button></p>
-        </li>
-      </ul>
-    </section>
+      <div class="install-main">
+        <section class="install-block" id="choose" aria-labelledby="choose-title">
+          <h2 id="choose-title">Which path?</h2>
+          <p>Both paths install the same skills. Use the plugin if you want the whole collection in Claude Code; use the CLI if you want one card, a different agent, or a project-local install.</p>
 
-    <section aria-labelledby="opencode">
-      <h2 id="opencode">OpenCode slash commands</h2>
-      <p>This repo ships slash commands in <code>.opencode/commands/</code>, so each skill works as <code>/&lt;skill-id&gt;</code>:</p>
-      <pre><code>/v-build
+          <div class="path-grid">
+            <div class="path-card">
+              <span class="path-card__letter" aria-hidden="true">A</span>
+              <h3>You use Claude Code</h3>
+              <p>Install the plugin. One command, all five skills, namespaced so nothing collides.</p>
+              <span class="path-card__tag">Recommended</span>
+            </div>
+            <div class="path-card">
+              <span class="path-card__letter" aria-hidden="true">B</span>
+              <h3>You use OpenCode or one skill</h3>
+              <p>Use the skills CLI. Install exactly the card you need into the agent you already use.</p>
+              <span class="path-card__tag">Per skill</span>
+            </div>
+          </div>
+
+          <div class="callout">
+            <strong>No account, no runtime.</strong> The skills are plain files in the repo. Read any of them before you install.
+          </div>
+        </section>
+
+        <section class="install-block" id="plugin" aria-labelledby="plugin-title">
+          <h2 id="plugin-title">Plugin install</h2>
+          <p>Installs the <code>vstack</code> plugin with every <code>v-</code> skill. Skills run namespaced, for example <code>/vstack:v-build</code>.</p>
+
+          <ol class="step-list">
+            <li>
+              <strong>Add the marketplace and install the plugin.</strong>
+              <div class="command command--stack">
+                <code>claude plugin marketplace add MamounHisham1/vstack
+claude plugin install vstack@vstack</code>
+                <button type="button" class="copy-btn" data-copy="claude plugin marketplace add MamounHisham1/vstack
+claude plugin install vstack@vstack">Copy</button>
+              </div>
+            </li>
+            <li>
+              <strong>Or run it inside a Claude Code session.</strong>
+              <div class="command">
+                <code>/plugin install vstack --marketplace MamounHisham1/vstack</code>
+                <button type="button" class="copy-btn" data-copy="/plugin install vstack --marketplace MamounHisham1/vstack">Copy</button>
+              </div>
+            </li>
+          </ol>
+
+          <div class="callout callout--brass">
+            <strong>Requires Claude Code v2.1.275+.</strong> After install, the skills are available as <code>/vstack:v-build</code>, <code>/vstack:v-fill-me</code>, and so on.
+          </div>
+        </section>
+
+        <section class="install-block" id="per-skill" aria-labelledby="per-skill-title">
+          <h2 id="per-skill-title">Install one skill</h2>
+          <p>The skills CLI installs a single card into the agent you choose. Replace the skill ID with any card from the catalog.</p>
+
+          <div class="skill-list" id="skill-list">
+            <!-- skill-list:start -->
+<article class="skill-row">
+  <div class="skill-row__head">
+    <span class="skill-row__no" aria-hidden="true">01</span>
+    <code class="skill-row__id">v-build</code>
+  </div>
+  <h3 class="skill-row__name">Build features</h3>
+  <p class="skill-row__desc">Build features end-to-end with parallel subagents — decompose big features into subagent-sized slices or fan out batches of small ones, then split into PRs, severity-gated review, sequential merge + local sync.</p>
+  <div class="command">
+    <code>npx skills add MamounHisham1/vstack <span class="cmd-tail">--skill v-build -y</span></code>
+    <button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-build -y" aria-label="Copy the install command for v-build">Copy</button>
+  </div>
+</article>
+<article class="skill-row">
+  <div class="skill-row__head">
+    <span class="skill-row__no" aria-hidden="true">02</span>
+    <code class="skill-row__id">v-copy-me</code>
+  </div>
+  <h3 class="skill-row__name">Capture a workflow</h3>
+  <p class="skill-row__desc">Extract workflow patterns from the current session and create or update v- skills in the vstack repo. Use when asked to copy, learn, or save how work gets done into skills.</p>
+  <div class="command">
+    <code>npx skills add MamounHisham1/vstack <span class="cmd-tail">--skill v-copy-me -y</span></code>
+    <button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-copy-me -y" aria-label="Copy the install command for v-copy-me">Copy</button>
+  </div>
+</article>
+<article class="skill-row">
+  <div class="skill-row__head">
+    <span class="skill-row__no" aria-hidden="true">03</span>
+    <code class="skill-row__id">v-fill-me</code>
+  </div>
+  <h3 class="skill-row__name">Catch up</h3>
+  <p class="skill-row__desc">Catch up on uncommitted, untracked, unpushed, and recently pushed work across the repo and worktrees. Use when the user asks to fill me in or what happened while away.</p>
+  <div class="command">
+    <code>npx skills add MamounHisham1/vstack <span class="cmd-tail">--skill v-fill-me -y</span></code>
+    <button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-fill-me -y" aria-label="Copy the install command for v-fill-me">Copy</button>
+  </div>
+</article>
+<article class="skill-row">
+  <div class="skill-row__head">
+    <span class="skill-row__no" aria-hidden="true">04</span>
+    <code class="skill-row__id">v-humanize</code>
+  </div>
+  <h3 class="skill-row__name">Rewrite plainly</h3>
+  <p class="skill-row__desc">Rewrite long or technical AI output into plain human-readable language. Use when the user asks to humanize, simplify, or re-explain the last output.</p>
+  <div class="command">
+    <code>npx skills add MamounHisham1/vstack <span class="cmd-tail">--skill v-humanize -y</span></code>
+    <button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-humanize -y" aria-label="Copy the install command for v-humanize">Copy</button>
+  </div>
+</article>
+<article class="skill-row">
+  <div class="skill-row__head">
+    <span class="skill-row__no" aria-hidden="true">05</span>
+    <code class="skill-row__id">v-skill-creator</code>
+  </div>
+  <h3 class="skill-row__name">Create a skill</h3>
+  <p class="skill-row__desc">Create a new v- prefixed skill in the vstack repo. Clarify requirements first, scaffold SKILL.md plus slash command, strip personal data, push to GitHub, and install via skills.sh.</p>
+  <div class="command">
+    <code>npx skills add MamounHisham1/vstack <span class="cmd-tail">--skill v-skill-creator -y</span></code>
+    <button type="button" class="copy-btn" data-copy="npx skills add MamounHisham1/vstack --skill v-skill-creator -y" aria-label="Copy the install command for v-skill-creator">Copy</button>
+  </div>
+</article>
+<!-- skill-list:end -->
+          </div>
+
+          <div class="callout callout--brass">
+            <strong>The CLI remembers your last selection.</strong> It reuses the agents you picked the next time you install, so you do not have to answer the same prompt again.
+          </div>
+        </section>
+
+        <section class="install-block" id="opencode" aria-labelledby="opencode-title">
+          <h2 id="opencode-title">OpenCode</h2>
+          <p>The repo ships slash commands in <code>.opencode/commands/</code>, so each skill works as <code>/&lt;skill-id&gt;</code> inside this repo. No install step is needed there.</p>
+
+          <div class="command command--stack">
+            <code>/v-build
 /v-copy-me
 /v-fill-me
 /v-humanize
-/v-skill-creator</code></pre>
-      <p>No install step needed inside this repo — just type the slash command.</p>
-    </section>
+/v-skill-creator</code>
+            <button type="button" class="copy-btn" data-copy="/v-build
+/v-copy-me
+/v-fill-me
+/v-humanize
+/v-skill-creator">Copy</button>
+          </div>
 
-    <section aria-labelledby="verify">
-      <h2 id="verify">Verify</h2>
-      <pre><code>npx skills list</code></pre>
-      <p><button type="button" class="copy-btn" data-copy="npx skills list">Copy</button></p>
-      <p>The <code>skills</code> CLI remembers your last selected agents and reuses them on the next install.</p>
+          <p>To use a skill in another project, install it through the skills CLI command above.</p>
+        </section>
+
+        <section class="install-block" id="verify" aria-labelledby="verify-title">
+          <h2 id="verify-title">Verify</h2>
+          <p>List what is installed for your agents:</p>
+
+          <div class="command">
+            <code>npx skills list</code>
+            <button type="button" class="copy-btn" data-copy="npx skills list">Copy</button>
+          </div>
+
+          <div class="callout">
+            <strong>Command missing?</strong> Check that you installed for the agent you are actually using. The plugin path is Claude Code-specific; the CLI path follows the agents you selected.
+          </div>
+        </section>
+
+        <section class="install-block" id="questions" aria-labelledby="questions-title">
+          <h2 id="questions-title">Questions</h2>
+          <dl class="faq">
+            <div>
+              <dt>Do I need both the plugin and the skills CLI?</dt>
+              <dd>No. Use one path. The plugin is the fastest way to get all five skills into Claude Code. The CLI is for one card, a different agent, or a project-local install.</dd>
+            </div>
+            <div>
+              <dt>Where do the skills live?</dt>
+              <dd>Each skill is one readable file at <code>skills/&lt;skill-id&gt;/SKILL.md</code>. Open the source before you run it.</dd>
+            </div>
+            <div>
+              <dt>Does this work without Claude Code?</dt>
+              <dd>The skills are plain files. The plugin path is Claude Code-specific; the CLI path installs into the agents the skills CLI supports. This repo also ships OpenCode slash commands.</dd>
+            </div>
+            <div>
+              <dt>Is it free?</dt>
+              <dd>Yes. vstack is MIT licensed. There is no account, no hosted service, and no usage limit on the skills themselves.</dd>
+            </div>
+          </dl>
+        </section>
+      </div>
+    </div>
+
+    <section class="closing" aria-labelledby="closing-title">
+      <div class="wrap closing__inner">
+        <h2 id="closing-title">Read the card. Copy the command. Ship.</h2>
+        <div class="closing__actions">
+          <a class="btn btn--primary" href="./index.html#catalog">Browse the catalog</a>
+          <a class="btn btn--ghost" href="#plugin">Back to the plugin</a>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer>
-    <p><a href="./index.html">Catalog</a> · <a href="https://github.com/MamounHisham1/vstack">GitHub</a></p>
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="site-footer__grid">
+        <div>
+          <div class="footer-brand">
+            <span class="brand__mark" aria-hidden="true">v</span>
+            <span>vstack</span>
+          </div>
+          <p class="footer-note">A personal skill collection for coding agents. Every skill is one readable file, MIT licensed, and built to ship real work.</p>
+        </div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="./index.html#catalog">Catalog</a>
+          <a href="./install.html">Install</a>
+          <a href="https://github.com/MamounHisham1/vstack">GitHub</a>
+          <a href="https://skills.sh/MamounHisham1/vstack">skills.sh</a>
+          <a href="https://github.com/MamounHisham1/vstack/blob/main/LICENSE">License</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Mamoun Hisham · MIT licensed</span>
+        <span>Set in Archivo + Courier Prime. No analytics.</span>
+      </div>
+    </div>
   </footer>
 
-  <script>
-    (function () {
-      function copyText(text, btn) {
-        function done(ok) {
-          if (!btn) return;
-          var original = btn.getAttribute('data-original') || 'Copy';
-          btn.textContent = ok ? 'Copied!' : 'Copy failed';
-          setTimeout(function () { btn.textContent = original; }, 1400);
-        }
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(function () { done(true); }, function () { fallback(); });
-        } else {
-          fallback();
-        }
-        function fallback() {
-          try {
-            var ta = document.createElement('textarea');
-            ta.value = text;
-            ta.setAttribute('readonly', '');
-            ta.style.position = 'fixed';
-            ta.style.opacity = '0';
-            document.body.appendChild(ta);
-            ta.select();
-            var ok = document.execCommand('copy');
-            document.body.removeChild(ta);
-            done(!!ok);
-          } catch (e) {
-            done(false);
-          }
-        }
-      }
-      document.querySelectorAll('[data-copy]').forEach(function (btn) {
-        btn.setAttribute('data-original', btn.textContent);
-        btn.addEventListener('click', function () {
-          copyText(btn.getAttribute('data-copy') || '', btn);
-        });
-      });
-    })();
-  </script>
+  <div class="visually-hidden" id="copy-status" role="status" aria-live="polite"></div>
 </body>
 </html>

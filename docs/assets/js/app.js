@@ -1,11 +1,7 @@
 'use strict';
 
 (function () {
-  var CANDIDATE_URLS = ['data/skills.json', './data/skills.json'];
-  var GITHUB_REPO = 'https://github.com/MamounHisham1/vstack';
-  var SKILLS_SH = 'https://skills.sh/MamounHisham1/vstack';
-
-  var state = { all: [], filtered: [] };
+  var REPO = 'https://github.com/MamounHisham1/vstack';
 
   function escapeHtml(value) {
     return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
@@ -20,266 +16,249 @@
     });
   }
 
-  function $(id) {
-    return document.getElementById(id);
+  // Keep the " --skill <id> -y" tail on one line so a wrapped command never
+  // leaves a lone "-y" on its own line.
+  function commandMarkup(command) {
+    return escapeHtml(command).replace(/ (--skill .*)$/, ' <span class="cmd-tail">$1</span>');
   }
 
-  function skillText(skill) {
-    return [skill.id, skill.title, skill.description].filter(Boolean).join(' ').toLowerCase();
+  function resetCopyButton(button) {
+    if (!button) return;
+    if (button._copyTimer) {
+      window.clearTimeout(button._copyTimer);
+      button._copyTimer = null;
+    }
+    if (button.dataset.label) button.textContent = button.dataset.label;
+    button.classList.remove('is-copied');
+    if (button.dataset.ariaLabel) button.setAttribute('aria-label', button.dataset.ariaLabel);
+    else if (button.dataset.ariaLabel === '') button.removeAttribute('aria-label');
   }
 
-  function installCmdFor(skill) {
-    if (skill.install_cmd) return skill.install_cmd;
-    if (skill.id) return 'npx skills add MamounHisham1/vstack --skill ' + skill.id + ' -y';
-    return 'npx skills add MamounHisham1/vstack --skill \'*\' -y';
-  }
+  function copyText(text, button) {
+    if (!button.dataset.label) button.dataset.label = button.textContent;
+    if (button.dataset.ariaLabel === undefined) {
+      button.dataset.ariaLabel = button.getAttribute('aria-label') || '';
+    }
+    if (button._copyTimer) {
+      window.clearTimeout(button._copyTimer);
+      button._copyTimer = null;
+    }
 
-  function skillPathFor(skill) {
-    if (skill.path) return skill.path;
-    if (skill.id) return 'skills/' + skill.id + '/SKILL.md';
-    return '';
-  }
+    var original = button.dataset.label;
 
-  function copyText(text, btn) {
+    function announce(ok) {
+      var status = document.getElementById('copy-status');
+      if (!status) return;
+      status.textContent = '';
+      window.setTimeout(function () {
+        status.textContent = ok
+          ? 'Copied to clipboard.'
+          : 'Copy failed. Select the command and copy it manually.';
+      }, 40);
+    }
+
     function done(ok) {
-      if (!btn) return;
-      var original = btn.getAttribute('data-label') || 'Copy';
-      btn.textContent = ok ? 'Copied!' : 'Copy failed';
-      window.setTimeout(function () { btn.textContent = original; }, 1400);
+      button.textContent = ok ? 'Copied' : 'Copy failed';
+      button.classList.toggle('is-copied', ok);
+      button.setAttribute('aria-label', ok ? 'Copied to clipboard' : 'Copy failed');
+      announce(ok);
+      button._copyTimer = window.setTimeout(function () {
+        button.textContent = original;
+        button.classList.remove('is-copied');
+        if (button.dataset.ariaLabel) button.setAttribute('aria-label', button.dataset.ariaLabel);
+        else button.removeAttribute('aria-label');
+        button._copyTimer = null;
+      }, 1500);
     }
-    if (text == null) text = '';
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { fallback(); });
-    } else {
-      fallback();
-    }
+
     function fallback() {
       try {
-        var ta = document.createElement('textarea');
-        ta.value = text;
-        ta.setAttribute('readonly', '');
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
+        var area = document.createElement('textarea');
+        area.value = text;
+        area.setAttribute('readonly', '');
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
         var ok = document.execCommand('copy');
-        document.body.removeChild(ta);
+        document.body.removeChild(area);
         done(!!ok);
-      } catch (e) {
+      } catch (error) {
         done(false);
       }
     }
-  }
 
-  function updateCount(countEl, shown, total) {
-    if (!countEl) return;
-    countEl.textContent = shown + ' of ' + total + ' skills';
-  }
-
-  function renderCards(grid, modal, countEl, skills) {
-    if (!grid) return;
-    grid.innerHTML = '';
-    if (!skills.length) {
-      var empty = document.createElement('p');
-      empty.className = 'empty';
-      empty.textContent = 'No skills match your search.';
-      grid.appendChild(empty);
-      return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        done(true);
+      }, fallback);
+    } else {
+      fallback();
     }
-    skills.forEach(function (skill) {
-      var id = skill.id || 'unknown';
-      var title = skill.title || id;
-      var desc = skill.description || '';
-      var trigger = skill.trigger || ('/' + id);
-      var cmd = installCmdFor(skill);
-
-      var card = document.createElement('article');
-      card.className = 'card';
-      card.setAttribute('tabindex', '0');
-      card.setAttribute('role', 'button');
-      card.setAttribute('data-skill-id', id);
-      card.setAttribute('aria-label', title + ' — open details');
-
-      var h3 = document.createElement('h3');
-      h3.textContent = title;
-      card.appendChild(h3);
-
-      var idLine = document.createElement('p');
-      idLine.className = 'card-id';
-      var idCode = document.createElement('code');
-      idCode.textContent = id;
-      idLine.appendChild(idCode);
-      card.appendChild(idLine);
-
-      var p = document.createElement('p');
-      p.className = 'card-desc';
-      p.textContent = desc;
-      card.appendChild(p);
-
-      var meta = document.createElement('div');
-      meta.className = 'meta';
-
-      var pill = document.createElement('code');
-      pill.className = 'pill';
-      pill.textContent = trigger;
-      meta.appendChild(pill);
-
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'copy-btn card-install';
-      btn.setAttribute('data-label', 'Install');
-      btn.textContent = 'Install';
-      btn.setAttribute('aria-label', 'Copy install command for ' + id);
-      btn.addEventListener('click', function (ev) {
-        ev.stopPropagation();
-        copyText(cmd, btn);
-      });
-      meta.appendChild(btn);
-      card.appendChild(meta);
-
-      card.addEventListener('click', function () { openModal(modal, skill); });
-      card.addEventListener('keydown', function (ev) {
-        if (ev.key === 'Enter' || ev.key === ' ') {
-          ev.preventDefault();
-          openModal(modal, skill);
-        }
-      });
-
-      grid.appendChild(card);
-    });
   }
 
-  function openModal(modal, skill) {
-    if (!modal) return;
-    var id = skill.id || 'unknown';
-    var title = skill.title || id;
-    var desc = skill.description || '';
-    var trigger = skill.trigger || ('/' + id);
-    var cmd = installCmdFor(skill);
-    var path = skillPathFor(skill);
-    var githubUrl = path ? GITHUB_REPO + '/blob/main/' + path : GITHUB_REPO;
+  function initSearch() {
+    var input = document.getElementById('search');
+    var grid = document.getElementById('skills-grid');
+    var count = document.getElementById('skill-count');
+    var empty = document.getElementById('catalog-empty');
+    var clear = document.getElementById('clear-search');
 
-    modal.innerHTML =
-      '<div class="modal-overlay" data-close="true">' +
-        '<div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">' +
-          '<button type="button" class="modal-close" data-close="true" aria-label="Close dialog">&times;</button>' +
-          '<h2 id="modal-title">' + escapeHtml(title) + '</h2>' +
-          '<p class="modal-id"><code>' + escapeHtml(id) + '</code></p>' +
-          '<p class="modal-desc">' + escapeHtml(desc) + '</p>' +
-          '<p class="modal-trigger">Trigger <code>' + escapeHtml(trigger) + '</code></p>' +
-          '<pre class="modal-pre"><code>' + escapeHtml(cmd) + '</code></pre>' +
-          '<div class="modal-actions">' +
-            '<button type="button" class="copy-btn modal-copy">Copy install command</button>' +
-            '<a class="modal-link" href="' + escapeHtml(githubUrl) + '" target="_blank" rel="noopener">View SKILL.md on GitHub</a>' +
-            '<a class="modal-link" href="' + escapeHtml(SKILLS_SH) + '" target="_blank" rel="noopener">View on skills.sh</a>' +
-          '</div>' +
-        '</div>' +
-      '</div>';
+    if (!input || !grid) return;
 
-    modal.hidden = false;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('[data-skill-id]'));
+    var total = cards.length;
 
-    var copyBtn = modal.querySelector('.modal-copy');
-    if (copyBtn) {
-      copyBtn.setAttribute('data-label', copyBtn.textContent);
-      copyBtn.addEventListener('click', function () { copyText(cmd, copyBtn); });
+    function apply() {
+      var query = input.value.trim().toLowerCase();
+      var shown = 0;
+
+      cards.forEach(function (card) {
+        var text = card.getAttribute('data-search') || '';
+        var match = !query || text.indexOf(query) !== -1;
+        card.hidden = !match;
+        if (match) shown += 1;
+      });
+
+      if (count) count.textContent = shown + ' of ' + total + ' cards';
+      if (empty) empty.hidden = shown !== 0;
     }
 
-    modal.querySelectorAll('[data-close]').forEach(function (el) {
-      el.addEventListener('click', function (ev) {
-        if (el.classList.contains('modal-overlay') && ev.target !== el) return;
-        closeModal(modal);
-      });
-    });
+    input.addEventListener('input', apply);
 
-    var closeBtn = modal.querySelector('.modal-close');
-    if (closeBtn) closeBtn.focus();
-  }
-
-  function closeModal(modal) {
-    if (!modal) return;
-    modal.innerHTML = '';
-    modal.hidden = true;
-  }
-
-  function isModalOpen(modal) {
-    return !!modal && modal.hidden === false && !!modal.innerHTML;
-  }
-
-  function applyFilter(grid, modal, countEl, searchEl) {
-    var q = searchEl && searchEl.value ? searchEl.value.trim().toLowerCase() : '';
-    var filtered = !q
-      ? state.all.slice()
-      : state.all.filter(function (s) { return skillText(s).indexOf(q) !== -1; });
-    state.filtered = filtered;
-    renderCards(grid, modal, countEl, filtered);
-    updateCount(countEl, filtered.length, state.all.length);
-    return filtered;
-  }
-
-  function showFetchError(grid, countEl) {
-    if (countEl) countEl.textContent = '';
-    if (!grid) return;
-    grid.innerHTML =
-      '<p class="error">Could not load the skill catalog. ' +
-      'See the source on <a href="' + GITHUB_REPO + '">GitHub</a>.</p>';
-  }
-
-  function fetchSkills() {
-    function tryNext(index) {
-      if (index >= CANDIDATE_URLS.length) {
-        return Promise.reject(new Error('all candidates failed'));
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && input.value) {
+        input.value = '';
+        apply();
       }
-      return fetch(CANDIDATE_URLS[index], { headers: { Accept: 'application/json' } }).then(function (res) {
-        if (!res.ok) return tryNext(index + 1);
-        return res.json().then(function (data) {
-          if (!Array.isArray(data)) return tryNext(index + 1);
-          return data;
-        }, function () { return tryNext(index + 1); });
-      }, function () { return tryNext(index + 1); });
+    });
+
+    if (clear) {
+      clear.addEventListener('click', function () {
+        input.value = '';
+        apply();
+        input.focus();
+      });
     }
-    return tryNext(0);
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey) return;
+      var target = event.target;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT' || target.isContentEditable)) return;
+      var dialog = document.getElementById('skill-dialog');
+      if (dialog && dialog.open) return;
+      event.preventDefault();
+      input.focus();
+    });
+
+    apply();
+  }
+
+  function initPicker() {
+    var picker = document.getElementById('skill-picker');
+    var command = document.getElementById('picker-command');
+    var copy = document.getElementById('picker-copy');
+    if (!picker || !command || !copy) return;
+
+    function update() {
+      var option = picker.options[picker.selectedIndex];
+      if (!option) return;
+      var cmd = option.getAttribute('data-command') ||
+        'npx skills add MamounHisham1/vstack --skill ' + option.value + ' -y';
+      resetCopyButton(copy);
+      command.innerHTML = commandMarkup(cmd);
+      copy.setAttribute('data-copy', cmd);
+      copy.setAttribute('aria-label', 'Copy the install command for ' + option.value);
+      copy.dataset.ariaLabel = 'Copy the install command for ' + option.value;
+    }
+
+    picker.addEventListener('change', update);
+    update();
+  }
+
+  function initDialog() {
+    var dialog = document.getElementById('skill-dialog');
+    if (!dialog) return;
+    var lastFocused = null;
+
+    function close() {
+      if (typeof dialog.close === 'function') {
+        dialog.close();
+      } else {
+        dialog.removeAttribute('open');
+        document.documentElement.style.overflow = '';
+      }
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    }
+
+    dialog.addEventListener('close', function () {
+      document.documentElement.style.overflow = '';
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    });
+
+    dialog.addEventListener('click', function (event) {
+      if (event.target === dialog) close();
+    });
+
+    document.addEventListener('click', function (event) {
+      var copyButton = event.target.closest('[data-copy]');
+      if (copyButton) {
+        copyText(copyButton.getAttribute('data-copy') || '', copyButton);
+        return;
+      }
+
+      var openButton = event.target.closest('[data-open-card]');
+      if (openButton) {
+        var card = openButton.closest('[data-skill-id]');
+        if (card) {
+          var data = card.dataset;
+          var no = document.getElementById('dialog-no');
+          var id = document.getElementById('dialog-id');
+          var title = document.getElementById('dialog-title');
+          var desc = document.getElementById('dialog-desc');
+          var trigger = document.getElementById('dialog-trigger');
+          var path = document.getElementById('dialog-path');
+          var command = document.getElementById('dialog-command');
+          var source = document.getElementById('dialog-source');
+          var dialogCopy = dialog.querySelector('[data-dialog-copy]');
+
+          if (no) no.textContent = data.no || '01';
+          if (id) id.textContent = data.skillId || '';
+          if (title) title.textContent = data.title || '';
+          if (desc) desc.textContent = data.description || '';
+          if (trigger) trigger.textContent = data.trigger || '';
+          if (path) path.textContent = data.path || '';
+          if (command) command.innerHTML = commandMarkup(data.command || '');
+          if (source) source.href = REPO + '/blob/main/' + (data.path || '');
+          if (dialogCopy) {
+            resetCopyButton(dialogCopy);
+            dialogCopy.setAttribute('data-copy', data.command || '');
+            if (!dialogCopy.dataset.label) dialogCopy.dataset.label = 'Copy';
+            if (dialogCopy.dataset.ariaLabel === undefined) {
+              dialogCopy.dataset.ariaLabel = dialogCopy.getAttribute('aria-label') || '';
+            }
+          }
+
+          lastFocused = document.activeElement;
+          document.documentElement.style.overflow = 'hidden';
+          if (typeof dialog.showModal === 'function') {
+            if (!dialog.open) dialog.showModal();
+          } else {
+            dialog.setAttribute('open', '');
+          }
+        }
+        return;
+      }
+
+      if (event.target.closest('[data-close-dialog]')) close();
+    });
   }
 
   function init() {
-    var grid = $('skills-grid');
-    var searchEl = $('search');
-    var countEl = $('skill-count');
-    var modal = $('skill-modal');
-
-    if (modal && modal.hidden !== false) modal.hidden = true;
-
-    if (searchEl) {
-      searchEl.addEventListener('input', function () {
-        applyFilter(grid, modal, countEl, searchEl);
-      });
-    }
-
-    document.addEventListener('keydown', function (ev) {
-      if (ev.key === 'Escape' && modal && isModalOpen(modal)) closeModal(modal);
-    });
-
-    if (!grid) return;
-
-    fetchSkills().then(function (data) {
-      state.all = data;
-      state.filtered = data.slice();
-      renderCards(grid, modal, countEl, state.filtered);
-      updateCount(countEl, state.filtered.length, state.all.length);
-    }, function () {
-      showFetchError(grid, countEl);
-    });
+    initSearch();
+    initPicker();
+    initDialog();
   }
-
-  window.__vstack = {
-    state: state,
-    escapeHtml: escapeHtml,
-    applyFilter: applyFilter,
-    renderCards: renderCards,
-    openModal: openModal,
-    closeModal: closeModal,
-    fetchSkills: fetchSkills,
-    installCmdFor: installCmdFor
-  };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
