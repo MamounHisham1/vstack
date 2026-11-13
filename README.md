@@ -55,3 +55,5 @@ skills/<skill-id>/SKILL.md          # canonical skill (skills.sh + agents)
 - `v-skill-creator` — create a new `v-` skill in this repo, publish it, and install it. Run `/v-skill-creator`.
 - `v-copy-me` — extract how you work from the session and create or update `v-` skills. Run `/v-copy-me`.
 - `v-build` — build features with parallel subagents: decomposes big features into slices, fans out batches, ships as reviewed PRs, merges + syncs. Run `/v-build`.
+- `v-fill-me` — catch up on uncommitted, untracked, unpushed, and recently pushed work across repo and worktrees. Run `/v-fill-me`.
+- `v-humanize` — rewrite long or technical AI output into plain human-readable language. Run `/v-humanize`.
