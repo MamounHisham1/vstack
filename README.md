@@ -34,3 +34,4 @@ skills/<skill-id>/SKILL.md          # canonical skill (skills.sh + agents)
 ## Skills
 
 - `v-skill-creator` — create a new `v-` skill in this repo, publish it, and install it. Run `/v-skill-creator`.
+- `v-copy-me` — extract how you work from the session and create or update `v-` skills. Run `/v-copy-me`.
