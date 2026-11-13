@@ -1,0 +1,52 @@
+[
+  {
+    "id": "v-build",
+    "title": "V Build",
+    "description": "Build features end-to-end with parallel subagents — decompose big features into subagent-sized slices or fan out batches of small ones, then split into PRs, severity-gated review, sequential merge + local sync.",
+    "path": "skills/v-build/SKILL.md",
+    "install_cmd": "npx skills add MamounHisham1/vstack --skill v-build -y",
+    "trigger": "/v-build",
+    "opencode_command": ".opencode/commands/v-build.md",
+    "plugin": "vstack"
+  },
+  {
+    "id": "v-copy-me",
+    "title": "V Copy Me",
+    "description": "Extract workflow patterns from the current session and create or update v- skills in the vstack repo. Use when asked to copy, learn, or save how work gets done into skills.",
+    "path": "skills/v-copy-me/SKILL.md",
+    "install_cmd": "npx skills add MamounHisham1/vstack --skill v-copy-me -y",
+    "trigger": "/v-copy-me",
+    "opencode_command": ".opencode/commands/v-copy-me.md",
+    "plugin": "vstack"
+  },
+  {
+    "id": "v-fill-me",
+    "title": "V Fill Me",
+    "description": "Catch up on uncommitted, untracked, unpushed, and recently pushed work across the repo and worktrees. Use when the user asks to fill me in or what happened while away.",
+    "path": "skills/v-fill-me/SKILL.md",
+    "install_cmd": "npx skills add MamounHisham1/vstack --skill v-fill-me -y",
+    "trigger": "/v-fill-me",
+    "opencode_command": ".opencode/commands/v-fill-me.md",
+    "plugin": "vstack"
+  },
+  {
+    "id": "v-humanize",
+    "title": "V Humanize",
+    "description": "Rewrite long or technical AI output into plain human-readable language. Use when the user asks to humanize, simplify, or re-explain the last output.",
+    "path": "skills/v-humanize/SKILL.md",
+    "install_cmd": "npx skills add MamounHisham1/vstack --skill v-humanize -y",
+    "trigger": "/v-humanize",
+    "opencode_command": ".opencode/commands/v-humanize.md",
+    "plugin": "vstack"
+  },
+  {
+    "id": "v-skill-creator",
+    "title": "V Skill Creator",
+    "description": "Create a new v- prefixed skill in the vstack repo. Clarify requirements first, scaffold SKILL.md plus slash command, strip personal data, push to GitHub, and install via skills.sh.",
+    "path": "skills/v-skill-creator/SKILL.md",
+    "install_cmd": "npx skills add MamounHisham1/vstack --skill v-skill-creator -y",
+    "trigger": "/v-skill-creator",
+    "opencode_command": ".opencode/commands/v-skill-creator.md",
+    "plugin": "vstack"
+  }
+]
