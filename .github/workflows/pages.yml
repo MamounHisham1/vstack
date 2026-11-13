@@ -24,7 +24,7 @@ jobs:
           node-version: 20
       - run: node scripts/build-skills-json.mjs
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: docs/
   deploy:
