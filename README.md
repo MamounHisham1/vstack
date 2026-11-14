@@ -11,7 +11,17 @@ Personal skill collection. Every skill ID starts with `v-` and ships with a matc
 
 Live site: https://MamounHisham1.github.io/vstack/
 
-One-click install page: https://MamounHisham1.github.io/vstack/install.html
+Install guide: https://MamounHisham1.github.io/vstack/install.html
+
+## Let your agent install it
+
+Give this link to Claude Code, OpenCode, Codex, Cursor, or another coding agent:
+
+```text
+https://mamounhisham1.github.io/vstack/install.md
+```
+
+The agent reads the prompt, detects which agents are installed, asks which ones should get the skills, and installs all five after you confirm.
 
 ## Install as plugin (one install, all skills)
 
