@@ -14,10 +14,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Rebuild skills.json and check for staleness
+      - name: Rebuild catalog and check for staleness
         run: |
           node scripts/build-skills-json.mjs
-          git diff --exit-code docs/data/skills.json
+          git diff --exit-code docs/data/skills.json docs/index.html docs/install.html
       - name: Syntax-check JS
         run: |
           node --check scripts/build-skills-json.mjs
@@ -27,8 +27,10 @@ jobs:
           pip install pyyaml
           python3 -c "import yaml,glob; [yaml.safe_load(open(f)) for f in glob.glob('.github/workflows/*.yml')]; print('yaml ok')"
           python3 -c "import json; json.load(open('docs/data/skills.json')); print('json ok')"
-      - name: Check DOM IDs in index.html
+      - name: Check DOM IDs
         run: |
-          grep -q 'id="skills-grid"' docs/index.html
+          grep -q 'id="skill-list"' docs/index.html
           grep -q 'id="search"' docs/index.html
           grep -q 'id="skill-count"' docs/index.html
+          grep -q 'id="skill-picker"' docs/index.html
+          grep -q 'id="skill-picker"' docs/install.html
