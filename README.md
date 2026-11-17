@@ -80,3 +80,4 @@ scripts/                            # site build helpers
 - `v-fill-me` — catch up on uncommitted, untracked, unpushed, and recently pushed work across repo and worktrees. Run `/v-fill-me`. Install: `npx skills add MamounHisham1/vstack --skill v-fill-me -y`
 - `v-humanize` — rewrite long or technical AI output into plain human-readable language. Run `/v-humanize`. Install: `npx skills add MamounHisham1/vstack --skill v-humanize -y`
 - `v-device-debug` — debug an app on a device you can't touch: screenshot-driven rounds, remote builds, tunnel delivery. Run `/v-device-debug`. Install: `npx skills add MamounHisham1/vstack --skill v-device-debug -y`
+- `v-human-app-tester` — autonomously test any Android app via ADB USB as a real human — explore every screen, verify every element, log bugs, friction and boredom to tester_findings.md live. Run `/v-human-app-tester`. Install: `npx skills add MamounHisham1/vstack --skill v-human-app-tester -y`
